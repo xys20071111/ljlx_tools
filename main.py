@@ -33,7 +33,7 @@ elif choice == 3:
         print('Not reday.')
 elif choice == 4:
     uid = input('UID:')
-    res = requests.post('https://api.ljlx.com/rest/userinfo/simple/1',cookies=cookies,data={'uid_post':uid})
+    res = requests.get('https://api.ljlx.com/platform/userinfo/getuserextinfo?user_id='+uid,cookies=cookies)
     choice = input('Save it to a JSON file? [y/n]')
     if choice == 'y':
         filename = input('Filename(without .json):')
