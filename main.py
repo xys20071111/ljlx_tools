@@ -1,8 +1,13 @@
 import sys,requests
-cookie = sys.argv[1]
-cookies={'sc1':cookie}
+#cookie = sys.argv[1]
+#cookies={'sc1':cookie}
 print("Lejiqolexue tools,version 0.0.1")
-print("Cookies in using:"+cookie)
+if len(sys.argv) < 2:
+    print('Please give me a login token as argv[1]')
+    exit()
+token = sys.argv[1]
+cookies={'sc1':token}
+print("Token in using:"+token)
 print('(1) Pull a blog.\n(2) Get blog list.\n(3) Publish a blog.')
 print('(4) Get user info.')
 print('Please enter a number,if you want to exit,enter ^C')
