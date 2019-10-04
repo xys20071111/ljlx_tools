@@ -10,8 +10,10 @@ choice = int(input())
 if choice == 1:
     blogid = input('Please enter a blog id:')
     res = requests.get('http://blog.app.ljlx.com/rest/blog/cont.ashx?talent_id='+blogid,cookies=cookies)
-    print(res.text)
-    choice = input('Would you like to save it to a JSON file? [y/n]')
+    summary = requests.post('http://blog.app.ljlx.com/rest/blog/gettalent.ashx',cookies=cookies,data={'tag':'1','page_size':'1','page_index':blogid})
+    print('Blog info:\n' + summary.text)
+    print('Blog content:\n' + res.text)
+    choice = input('Would you like to save its content to a JSON file? [y/n]')
     if choice == 'y':
         filename = input('Filename(without ".json"):')
         with open(filename+'.json','w+') as f:
@@ -31,4 +33,11 @@ elif choice == 3:
         print('Not reday.')
 elif choice == 4:
     uid = input('UID:')
-    res = request.post()
+    res = requests.post('https://api.ljlx.com/rest/userinfo/simple/1',cookies=cookies,data={'uid_post':uid})
+    choice = input('Save it to a JSON file? [y/n]')
+    if choice == 'y':
+        filename = input('Filename(without .json):')
+        with open(filename+'.json','w+') as f:
+            f.write(res.text)
+    else:
+        print(res.text)
