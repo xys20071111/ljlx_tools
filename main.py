@@ -1,4 +1,4 @@
-import sys,requests
+import sys,requests,json
 #cookie = sys.argv[1]
 #cookies={'sc1':cookie}
 print("Lejiqolexue tools,version 0.0.1")
@@ -35,7 +35,13 @@ elif choice == 2:
     else:
             print(res.text)
 elif choice == 3:
-        print('Not reday.')
+        uid = input('UID:')
+        title = input('Title:')
+        summary = input('Summary:')
+        text = input('Text:')
+        data = {'title':json.dumps({'title':title,'summary':summary}),'user_id':uid,'proxy_user_id':uid,'content':'{"list":[{"type":10,"content":"<type=\"text\",size=6,fontsize=45.00,textcolor=\"33,33,33\">' + text + '"}]}','tag':'1','type':'0'}
+        print(requests.post('http://blog.app.ljlx.com/rest/blog/addtalent.ashx',cookies=cookies,data=data).text)
+
 elif choice == 4:
     uid = input('UID:')
     res = requests.get('https://api.ljlx.com/platform/userinfo/getuserextinfo?user_id='+uid,cookies=cookies)
