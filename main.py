@@ -9,7 +9,7 @@ token = sys.argv[1]
 cookies={'sc1':token}
 print("Token in using:"+token)
 print('(1) Pull a blog.\n(2) Get blog list.\n(3) Publish a blog.')
-print('(4) Get user info.')
+print('(4) Get user info.\n(5) Modify a blog.')
 print('Please enter a number,if you want to exit,enter ^C')
 choice = int(input())
 if choice == 1:
@@ -39,7 +39,7 @@ elif choice == 3:
         title = input('Title:')
         summary = input('Summary:')
         text = input('Text:')
-        data = {'title':json.dumps({'title':title,'summary':summary}),'user_id':uid,'proxy_user_id':uid,'content':'{"list":[{"type":10,"content":"<type=\"text\",size=6,fontsize=45.00,textcolor=\"33,33,33\">' + text + '"}]}','tag':'1','type':'0'}
+        data = {'title':json.dumps({'title':title,'summary':summary}),'user_id':uid,'proxy_user_id':'0','content':'{"list":[{"type":10,"content":"<type=\"text\",size=6,fontsize=45.00,textcolor=\"33,33,33\">' + text + '"}]}','tag':'1','type':'0'}
         print(requests.post('http://blog.app.ljlx.com/rest/blog/addtalent.ashx',cookies=cookies,data=data).text)
 
 elif choice == 4:
@@ -52,3 +52,11 @@ elif choice == 4:
             f.write(res.text)
     else:
         print(res.text)
+elif choice == 5:
+    uid = input('Author\'s uid:')
+    blogid = input('Blog id:')
+    title = input('Title:')
+    summary = input('Summary:')
+    text = input('Text:')
+    data = {'title':json.dumps({'title':title,'summary':summary}),'user_id':uid,'proxy_user_id':uid,'content':'{"list":[{"type":10,"content":"<type=\"text\",size=6,fontsize=45.00,textcolor=\"33,33,33\">' + text + '"}]}','tag':'1','type':'0','talent_id':blogid}
+    print(requests.post('http://blog.app.ljlx.com/rest/blog/modifyblog.ashx',cookies=cookies,data=data).text)
