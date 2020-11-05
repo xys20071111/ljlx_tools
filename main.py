@@ -10,7 +10,6 @@ def user(commandList):
             'https://api.ljlx.com/platform/userinfo/getuserextinfo?user_id='+uid, cookies=cookies)
         print(res.text)
 
-
 def blog(commandList):
     command = commandList[0]
     if command == 'get':
@@ -21,8 +20,11 @@ def blog(commandList):
     elif command == 'list':
         typeId = commandList[1]
         pageSize = commandList[2]
-        res = requests.get('http://blog.app.ljlx.com/rest/blog/gettalent.ashx',
-                           cookies=cookies, data={'tag': typeId, 'page_index': '1', 'page_size': pageSize})
+        res = requests.get('http://blog.app.ljlx.com/rest/blog/gettalent.ashx', cookies=cookies, data={
+            'tag': typeId,
+            'page_index': '1',
+            'page_size': pageSize
+        })
         print(res.text)
     elif command == 'publish':
         uid = commandList[1]
@@ -48,7 +50,6 @@ def blog(commandList):
                 'content': '{"list":[{"type":10,"content":"<type=\"text\",size=6,fontsize=45.00,textcolor=\"33,33,33\">' + text + '"}]}', 'tag': '1', 'type': '0', 'talent_id': blogid}
     print(requests.post('http://blog.app.ljlx.com/rest/blog/modifyblog.ashx',
                         cookies=cookies, data=data).text)
-
 
 def help(commandList):
     if len(commandList) == 0:
