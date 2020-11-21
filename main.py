@@ -2,29 +2,34 @@ import sys
 import requests
 import json
 
+USER_GET = 'https://api.ljlx.com/platform/userinfo/getuserextinfo?user_id='
+BLOG_GET = 'http://blog.app.ljlx.com/rest/blog/cont.ashx?talent_id='
+BLOG_LIST = 'http://blog.app.ljlx.com/rest/blog/gettalent.ashx'
+BLOG_PUBLISH = 'http://blog.app.ljlx.com/rest/blog/addtalent.ashx'
+BLOG_MODIFY = 'http://blog.app.ljlx.com/rest/blog/modifyblog.ashx'
+
 
 def user(commandList):
     if(commandList[0]) == 'get':
         uid = commandList[1]
-        res = requests.get(
-            'https://api.ljlx.com/platform/userinfo/getuserextinfo?user_id='+uid, cookies=cookies)
+        res = requests.get(USER_GET + uid, cookies=cookies)
         print(res.text)
+
 
 def blog(commandList):
     command = commandList[0]
     if command == 'get':
         blogid = commandList[1]
-        res = requests.get(
-            'http://blog.app.ljlx.com/rest/blog/cont.ashx?talent_id='+blogid, cookies=cookies)
+        res = requests.get(BLOG_GET + blogid, cookies=cookies)
         print(res.text)
     elif command == 'list':
         typeId = commandList[1]
         pageSize = commandList[2]
-        res = requests.get('http://blog.app.ljlx.com/rest/blog/gettalent.ashx', cookies=cookies, data={
-            'tag': typeId,
-            'page_index': '1',
-            'page_size': pageSize
-        })
+        res = requests.get(BLOG_LIST,
+                           cookies=cookies,
+                           data={'tag': typeId, 'page_index': '1',
+                                 'page_size': pageSize}
+                           )
         print(res.text)
     elif command == 'publish':
         uid = commandList[1]
@@ -33,23 +38,34 @@ def blog(commandList):
         title = commandList[4]
         summary = commandList[5]
         text = commandList[6]
-        data = {
+        Data = {
             'title': json.dumps({'title': title, 'summary': summary}),
             'user_id': uid,
             'proxy_user_id': uid,
-            'content': '{"list":[{"type":10,"content":"<type=\"text\",size=6,fontsize=45.00,textcolor=\"33,33,33\">' + text + '"}]}', 'tag': tag, 'type': btype}
-        print(requests.post('http://blog.app.ljlx.com/rest/blog/addtalent.ashx',
-                            cookies=cookies, data=data).text)
+            'content': '{"list":[{"type":10,"content":"<type=\"text\",size=6,fontsize=45.00,textcolor=\"33,33,33\">' + text + '"}]}',
+            'tag': tag,
+            'type': btype
+        }
+        res = requests.post(BLOG_PUBLISH, cookies=cookies, data=Data)
+        print(res.text)
     elif command == 'modify':
         uid = commandList[1]
         blogid = commandList[2]
         title = commandList[3]
         summary = commandList[4]
         text = commandList[5]
-        data = {'title': json.dumps({'title': title, 'summary': summary}), 'user_id': uid, 'proxy_user_id': uid,
-                'content': '{"list":[{"type":10,"content":"<type=\"text\",size=6,fontsize=45.00,textcolor=\"33,33,33\">' + text + '"}]}', 'tag': '1', 'type': '0', 'talent_id': blogid}
-    print(requests.post('http://blog.app.ljlx.com/rest/blog/modifyblog.ashx',
-                        cookies=cookies, data=data).text)
+        Data = {
+            'title': json.dumps({'title': title, 'summary': summary}),
+            'user_id': uid,
+            'proxy_user_id': uid,
+            'content': '{"list":[{"type":10,"content":"<type=\"text\",size=6,fontsize=45.00,textcolor=\"33,33,33\">' + text + '"}]}',
+            'tag': '1',
+            'type': '0',
+            'talent_id': blogid
+        }
+        res = requests.post(BLOG_MODIFY, cookies=cookies, data=Data)
+        print(res.text)
+
 
 def help(commandList):
     if len(commandList) == 0:
@@ -80,6 +96,7 @@ def help(commandList):
         if subcommand == 'get':
             print('user get <uid>')
 
+
 def run():
     command = input('>')
     commandList = command.split(' ')
@@ -91,6 +108,7 @@ def run():
         help(commandList[1:])
     elif commandList[0] == 'exit' or commandList[0] == 'quit':
         sys.exit(0)
+
 
 if __name__ == '__main__':
     print("Lejiqolexue tools,version 0.0.1")
