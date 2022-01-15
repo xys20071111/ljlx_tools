@@ -31,6 +31,15 @@ def blog(commandList):
                                  'page_size': pageSize}
                            )
         print(res.text)
+    elif command == 'list_private':
+        uid = commandList[1]
+        pageSize = commandList[2]
+        res = requests.get(BLOG_LIST,
+                           cookies=cookies,
+                           data={'tag': '2', 'page_index': '1', 'sort': '2','user_id':uid,
+                                 'page_size': pageSize}
+                           )
+        print(res.text)
     elif command == 'publish':
         uid = commandList[1]
         btype = commandList[2]
